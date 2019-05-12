@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -14,12 +14,11 @@ public class Admin : MonoBehaviour {
     public TMP_InputField ifAdmin;
 
     private string password = "missChib";
-
-	/// <summary>
-	/// Checks the password. Called by Admin_InputField
-	/// </summary>
-	/// <param name="s">String to check against passoword</param>
-	public void CheckPassword(string s){
+    /// <summary>
+    /// Checks the password. Called by Admin_InputField
+    /// </summary>
+    /// <param name="s">String to check against passoword</param>
+    public void CheckPassword(string s){
         if(s == password){
             LoggerCSV logger = LoggerCSV.GetInstance();
             logger.AddEvent(LoggerCSV.EVENT_UNABLE);
@@ -37,10 +36,10 @@ public class Admin : MonoBehaviour {
                 Destroy(master.GetComponent<EmoFacialExpression>());
             }
             //Reset Logger
-			logger.inSession = false;
-			logger.SaveCSV();
-			logger.ResetCSV();
-			SceneManager.LoadScene(0);
+	    logger.inSession = false;
+	    logger.SaveCSV();
+	    logger.ResetCSV();
+	    SceneManager.LoadScene(0);
         }
         else{
             btnAdmin.gameObject.SetActive(true);
