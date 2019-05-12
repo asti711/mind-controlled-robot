@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE EML>
+<EML version="1.0" language="en_US">
+<sequence>
+	<time value ="2s0t">
+		<cognitiv event="push" shape="normal" />
+		<signal_quality value="1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1" />
+	</time>
+	<time value ="6s0t">
+		<cognitiv event="pull" shape="normal" />
+		<signal_quality value="1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1" />
+	</time>
+	<time value ="10s0t">
+		<cognitiv event="left" shape="normal" />
+		<signal_quality value="1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1" />
+	</time>
+	<time value ="14s0t">
+		<cognitiv event="right" shape="normal" />
+		<signal_quality value="1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1" />
+	</time>
+</sequence>
+</EML>
