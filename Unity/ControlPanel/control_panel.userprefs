@@ -1,0 +1,21 @@
+﻿<Properties StartupConfiguration="{1CE5CE23-5434-AF8A-9ABD-DC12C5007FFD}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/MainController.cs">
+    <Files>
+      <File FileName="Assets/Scripts/Emotiv/Contact Quality/ContactQualityUIControl.cs" Line="39" Column="33" />
+      <File FileName="Assets/Scripts/LoggerCSV.cs" Line="138" Column="14" />
+      <File FileName="Assets/Scripts/MainController.cs" Line="104" Column="1" />
+      <File FileName="Assets/Scripts/FamiliarizationController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/TrainingController.cs" Line="31" Column="12" />
+      <File FileName="Assets/Scripts/MainSet.cs" Line="32" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/eliasposen/Documents/_fall_2017/sproj/game/building_blocks/brain_blocks/Assets/Scripts/Emotiv/Plugins/EmoMentalCommand.cs" relfile="Assets/Scripts/Emotiv/Plugins/EmoMentalCommand.cs" line="63" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.brain__blocks PreferredExecutionTarget="Unity.Editor" />
+  <MultiItemStartupConfigurations />
+</Properties>
