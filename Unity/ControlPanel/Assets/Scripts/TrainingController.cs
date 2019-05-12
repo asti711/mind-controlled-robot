@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 /// Users must train neutral, each action twice, and complete the trial for each action
 /// </summary>
 public class TrainingController : MonoBehaviour {
+
     //Control
     public TrainingCube cube;
     uint userId;
@@ -14,7 +15,7 @@ public class TrainingController : MonoBehaviour {
     public bool training, leftFirst, debug = false;
     //public Text lp, rp;
     public string trainType;
-	EmoEngine engine;
+    EmoEngine engine;
     TrainingUI UI;
 
     //XX Start For testing without EMOTIV
@@ -38,36 +39,37 @@ public class TrainingController : MonoBehaviour {
 	//rp.text = "Right Power: " + EmoMentalCommand.GetMentalCommandActionPower()[6];
 	//}
 
-	//------------------------------Emotiv Event Functions------------------------------//
+//------------------------------Emotiv Event Functions------------------------------//
 
-	/// <summary>
-	/// Binds local functions to EmoEngine functions
-	/// </summary>
-	void BindEvents(){
+    /// <summary>
+    /// Binds local functions to EmoEngine functions
+    /// </summary>
+    void BindEvents(){
         engine.UserAdded += OnUserAdded;
-		engine.MentalCommandTrainingStarted += OnTrainingStarted;
+	engine.MentalCommandTrainingStarted += OnTrainingStarted;
         engine.MentalCommandTrainingSucceeded += OnTrainingSuccess;
         engine.MentalCommandTrainingFailed += OnTrainingFailed;
-		engine.MentalCommandTrainingCompleted += OnTrainingAccepted;
+	engine.MentalCommandTrainingCompleted += OnTrainingAccepted;
         engine.MentalCommandEmoStateUpdated += OnMentalCommandEmoStateUpdated;
     }
-	/// <summary>
-	/// Unbinds local functions from EmoEngine functions
-	/// </summary>	
+	
+    /// <summary>
+    /// Unbinds local functions from EmoEngine functions
+    /// </summary>	
     void UnbindEvents(){
-	    engine.UserAdded -= OnUserAdded;
-		engine.MentalCommandTrainingStarted -= OnTrainingStarted;
+	engine.UserAdded -= OnUserAdded;
+	engine.MentalCommandTrainingStarted -= OnTrainingStarted;
         engine.MentalCommandTrainingSucceeded -= OnTrainingSuccess;
         engine.MentalCommandTrainingFailed -= OnTrainingFailed;
-		engine.MentalCommandTrainingCompleted -= OnTrainingAccepted;
-		engine.MentalCommandEmoStateUpdated -= OnMentalCommandEmoStateUpdated;
+	engine.MentalCommandTrainingCompleted -= OnTrainingAccepted;
+	engine.MentalCommandEmoStateUpdated -= OnMentalCommandEmoStateUpdated;
     }
 
-	/// <summary>
-	/// Event function called when EmoEngine detects new mental command
+    /// <summary>
+    /// Event function called when EmoEngine detects new mental command
     /// Updates current action for UI and Training Cube
-	/// </summary>
-	void OnMentalCommandEmoStateUpdated(object sender, EmoStateUpdatedEventArgs args){
+    /// </summary>
+    void OnMentalCommandEmoStateUpdated(object sender, EmoStateUpdatedEventArgs args){
         if (training)
         {
             cube.SetAciton(cube.ACTION_RESET);
@@ -94,50 +96,50 @@ public class TrainingController : MonoBehaviour {
         }
     }
 
-	/// <summary>
-	/// Event function called when EmoEngine detects error in training
-	/// </summary>
-	void OnTrainingFailed(object sender, EmoEngineEventArgs args)
-	{
-		Debug.Log("In Failed");
-		UI.UpdateStatusText(trainType + " Failed Due to Noisy Signal, Please Try Again");
-		cube.SetAciton(cube.ACTION_RESET);
-		UI.ActivateButtons(true);
-		training = false;
-	}
+    /// <summary>
+    /// Event function called when EmoEngine detects error in training
+    /// </summary>
+    void OnTrainingFailed(object sender, EmoEngineEventArgs args)
+    {
+	Debug.Log("In Failed");
+	UI.UpdateStatusText(trainType + " Failed Due to Noisy Signal, Please Try Again");
+	cube.SetAciton(cube.ACTION_RESET);
+	UI.ActivateButtons(true);
+	training = false;
+    }
 
-	/// <summary>
-	/// Event function called by EmoEngine when EPOC is connected
-	/// </summary>
-	void OnUserAdded(object sender, EmoEngineEventArgs args){
+    /// <summary>
+    /// Event function called by EmoEngine when EPOC is connected
+    /// </summary>
+    void OnUserAdded(object sender, EmoEngineEventArgs args){
         userId = args.userId;
     }
-	/// <summary>
-	/// Event function called by EmoEngine before training period starts
-	/// </summary>
-	public void OnTrainingStarted(object sender, EmoEngineEventArgs args)
+    /// <summary>
+    /// Event function called by EmoEngine before training period starts
+    /// </summary>
+    public void OnTrainingStarted(object sender, EmoEngineEventArgs args)
     {
         UI.UpdateStatusText( "Training " + trainType);
         training = true;
         UI.ActivateButtons(false);
     }
 
-	/// <summary>
-	/// Event function called by EmoEngine after training period ends
-	/// </summary>    
+    /// <summary>
+    /// Event function called by EmoEngine after training period ends
+    /// </summary>    
     public void OnTrainingSuccess(object sender, EmoEngineEventArgs args){
 	    Debug.Log("In Success");
-		engine.MentalCommandSetTrainingControl(userId, EdkDll.IEE_MentalCommandTrainingControl_t.MC_ACCEPT);
-	}
+	engine.MentalCommandSetTrainingControl(userId, EdkDll.IEE_MentalCommandTrainingControl_t.MC_ACCEPT);
+    }
 
-	/// <summary>
-	/// Event function called by EmoEngine when training data is accepted
-	/// </summary>
-	void OnTrainingAccepted(object sender, EmoEngineEventArgs args){
-		Debug.Log("In Accepted");
+    /// <summary>
+    /// Event function called by EmoEngine when training data is accepted
+    /// </summary>
+    void OnTrainingAccepted(object sender, EmoEngineEventArgs args){
+	Debug.Log("In Accepted");
         UI.UpdateStatusText( "Success! Training " + trainType + " Concluded");
-		training = false;
-		UI.ActivateButtons(true);
+	training = false;
+	UI.ActivateButtons(true);
 
         if (!firstTime || trainType == "Neutral")
         {
@@ -145,64 +147,63 @@ public class TrainingController : MonoBehaviour {
         }
         else
             cube.SetAciton(cube.ACTION_RESET);
-		//Shows information about training trials after
-		// accepting the first right or left data
-		if (firstTime && trainType != "Neutral")
-		{
-			firstTime = false;
-			UI.trialInfoPanel.SetActive(true);
+	//Shows information about training trials after
+    	// accepting the first right or left data
+	if (firstTime && trainType != "Neutral")
+	{
+		firstTime = false;
+		UI.trialInfoPanel.SetActive(true);
 
-		}
 	}
+    }
 
-	/// <summary>
-	/// Deactivates Right and Left mental commands
-	/// </summary>
-	void DeactivateRL(){
+    /// <summary>
+    /// Deactivates Right and Left mental commands
+    /// </summary>
+    void DeactivateRL(){
         EmoMentalCommand.EnableMentalCommandAction(EdkDll.IEE_MentalCommandAction_t.MC_RIGHT, false);
         EmoMentalCommand.EnableMentalCommandAction(EdkDll.IEE_MentalCommandAction_t.MC_LEFT, false);
         EmoMentalCommand.EnableMentalCommandActionsList();
     }
-	/// <summary>
-	/// Erases ment command training data
-	/// </summary>
+    /// <summary>
+    /// Erases ment command training data
+    /// </summary>
     /// <param name="action">Action to be erased</param>
-	void EraseAction(EdkDll.IEE_MentalCommandAction_t action){
-		EdkDll.IEE_MentalCommandSetTrainingAction((uint)EmoUserManagement.currentUser, action);
-		EdkDll.IEE_MentalCommandSetTrainingControl((uint)EmoUserManagement.currentUser,
-												   EdkDll.IEE_MentalCommandTrainingControl_t.MC_ERASE);
+    void EraseAction(EdkDll.IEE_MentalCommandAction_t action){
+	EdkDll.IEE_MentalCommandSetTrainingAction((uint)EmoUserManagement.currentUser, action);
+	EdkDll.IEE_MentalCommandSetTrainingControl((uint)EmoUserManagement.currentUser,
+	EdkDll.IEE_MentalCommandTrainingControl_t.MC_ERASE);
     }
 
 
-	//------------------------------UI OnClick Functions------------------------------//
+//------------------------------UI OnClick Functions------------------------------//
 
-	/// <summary>
-	/// Custom Start function called by Start_Training_Button
-	/// </summary>
-	public void CustomStart()
+    /// <summary>
+    /// Custom Start function called by Start_Training_Button
+    /// </summary>
+    public void CustomStart()
     {
         LoggerCSV logger = LoggerCSV.GetInstance();
         logger.AddEvent(LoggerCSV.EVENT_TRAINSTAGE_START);
 
         UI = GetComponent<TrainingUI>();
         cube = GameObject.Find("Block").GetComponent<TrainingCube>();
-        leftFirst = logger.counterBalanceID == 1
-                          || logger.counterBalanceID == 2;
+        leftFirst = logger.counterBalanceID == 1 || logger.counterBalanceID == 2;
 
-		engine = EmoEngine.Instance;
+	engine = EmoEngine.Instance;
         DeactivateRL();
         UI.InitUI();
-		BindEvents();
+	BindEvents();
     }
 
-	/// <summary>
-	/// Initiates trainging of mental command, called by Left_Button, Right_Button, and Neutral_Button
-	/// </summary>
+    /// <summary>
+    /// Initiates trainging of mental command, called by Left_Button, Right_Button, and Neutral_Button
+    /// </summary>
     /// <param name="type">Command to be trained ("Neutral","Left","Right")</param>
-	public void TrainAction(string type)
-	{
+    public void TrainAction(string type)
+    {
         LoggerCSV logger = LoggerCSV.GetInstance();
-		trainType = type;
+	trainType = type;
         EdkDll.IEE_MentalCommandAction_t toTrain = EdkDll.IEE_MentalCommandAction_t.MC_NEUTRAL;
         cube.SetAciton(cube.ACTION_RESET);
         switch (type)
@@ -212,27 +213,27 @@ public class TrainingController : MonoBehaviour {
                 logger.AddEvent(LoggerCSV.EVENT_TRAINING_L);
                 break;
             case "Right":
-				toTrain = EdkDll.IEE_MentalCommandAction_t.MC_RIGHT;
-				logger.AddEvent(LoggerCSV.EVENT_TRAINING_R);
-				break;
+		toTrain = EdkDll.IEE_MentalCommandAction_t.MC_RIGHT;
+		logger.AddEvent(LoggerCSV.EVENT_TRAINING_R);
+		break;
             default:
                 logger.AddEvent(LoggerCSV.EVENT_TRAINING_N);
                 break;
         }
 
-		StartCoroutine(UI.UpdateSlider());
+	StartCoroutine(UI.UpdateSlider());
 
         EmoMentalCommand.EnableMentalCommandAction(toTrain, true);
         EmoMentalCommand.EnableMentalCommandActionsList();
         EmoMentalCommand.StartTrainingMentalCommand(toTrain);
-	}
+    }
 
-	/// <summary>
+    /// <summary>
     /// Initiates clearing of mental command, called by Clear_Left_Button, 
     /// Clear_Right_Button, Clear_and Neutral_Button
-	/// </summary>
-	/// <param name="type">Command to be cleared ("Neutral","Left","Right")</param>
-	public void ClearTrainingCheck(string type)
+    /// </summary>
+    /// <param name="type">Command to be cleared ("Neutral","Left","Right")</param>
+    public void ClearTrainingCheck(string type)
     {
         switch (type)
         {
@@ -250,15 +251,15 @@ public class TrainingController : MonoBehaviour {
 
     }
 
-	/// <summary>
-	/// Clear mental command accepted by Accept_Clear_Button,
-	/// Clears all data if neutral is cleared
-	/// </summary>
-	/// <param name="type">Command to be trained ("Neutral","Left","Right")</param>
-	public void ClearTraining(){
+    /// <summary>
+    /// Clear mental command accepted by Accept_Clear_Button,
+    /// Clears all data if neutral is cleared
+    /// </summary>
+    /// <param name="type">Command to be trained ("Neutral","Left","Right")</param>
+    public void ClearTraining(){
         LoggerCSV logger = LoggerCSV.GetInstance();
         string statusText = "Neutral";
-		EdkDll.IEE_MentalCommandAction_t action = EdkDll.IEE_MentalCommandAction_t.MC_NEUTRAL;
+	EdkDll.IEE_MentalCommandAction_t action = EdkDll.IEE_MentalCommandAction_t.MC_NEUTRAL;
         switch (trainType)
         {
             case "clear left":
@@ -287,8 +288,8 @@ public class TrainingController : MonoBehaviour {
                 }
                 //Right
                 if (EmoMentalCommand.MentalCommandActionsEnabled[6]){
-					Debug.Log("right active - clear");
-					EraseAction(EdkDll.IEE_MentalCommandAction_t.MC_LEFT);
+		    Debug.Log("right active - clear");
+		    EraseAction(EdkDll.IEE_MentalCommandAction_t.MC_LEFT);
                 }
                 DeactivateRL();
                 //Update UI and Training cube
@@ -296,14 +297,14 @@ public class TrainingController : MonoBehaviour {
                 UI.UpdateUI(trainType);
                 cube.SetAciton(cube.ACTION_RESET);
                 return;
-		}
+	}
 
-		EraseAction(action);
+	EraseAction(action);
         //Deactivate cleared action
         EmoMentalCommand.EnableMentalCommandAction(action, false);
         EmoMentalCommand.EnableMentalCommandActionsList();
-		//Update UI and Training cube
-		UI.UpdateUI(trainType);
+	//Update UI and Training cube
+	UI.UpdateUI(trainType);
         UI.ActivateButtons(true);
         cube.SetAciton(cube.ACTION_RESET);
         UI.UpdateStatusText( "Cleared " + statusText + " Training Data");
@@ -319,18 +320,18 @@ public class TrainingController : MonoBehaviour {
         SceneManager.LoadScene(2);
     }
 
-	/// <summary>
-	/// Starts/Ends training trials, Called by Right_Trial_Button and Left_Trial_Button
-	/// </summary>
-	/// <param name="left">Left command?</param>
-	public void StartEndTrial(bool left){
+    /// <summary>
+    /// Starts/Ends training trials, Called by Right_Trial_Button and Left_Trial_Button
+    /// </summary>
+    /// <param name="left">Left command?</param>
+    public void StartEndTrial(bool left){
         cube.SetAciton(cube.ACTION_RESET);
         if (left){
             //Trial is ongoing
             if (UI.leftTrial)
                 UI.UpdateUI("left trial stop");
-			//Trial hasn't started
-			else
+		//Trial hasn't started
+ 	    else
                 UI.UpdateUI("left trial start");
         }
         else{
